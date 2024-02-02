@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-spring-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java-spring-pod
+  template:
+    metadata:
+      labels:
+        app: java-spring-pod
+    spec:
+      containers:
+      - name: java-spring-pod
+        image: localhost:5010/java-spring-server:v1
+        ports:
+        - containerPort: 8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: java-spring-service
+spec:
+  selector:
+    app: java-spring-pod
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: ClusterIP
