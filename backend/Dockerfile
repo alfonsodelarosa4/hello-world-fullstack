@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy the application JAR file into the container at /app
 COPY ./hello-world-server/app/build/libs/app.jar /app/app.jar
 
-# Make port 8081 available to the world outside this container
-EXPOSE 8081
+# Make port 8080 available to the world outside this container
+EXPOSE 8080
 
 # Run the application when the container launches
 CMD ["java", "-jar", "app.jar"]

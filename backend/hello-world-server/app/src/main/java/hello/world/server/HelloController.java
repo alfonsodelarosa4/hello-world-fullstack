@@ -10,8 +10,15 @@ import org.springframework.http.ResponseEntity;
 @RestController
 @CrossOrigin(origins="*")
 public class HelloController {
+    @GetMapping("/")
+    public ResponseEntity<String> sayHelloWorld() {
+        String message = "Hello world";
+        return ResponseEntity.ok(message);
+    }
+
     @PostMapping("/sayHello")
     public ResponseEntity<Map<String, String>> sayHello(@RequestBody Map<String, String> request) {
+        System.out.println("Request received");
         String name = request.get("name");
 
         if (name == null || name.trim().isEmpty()) {
@@ -25,4 +32,5 @@ public class HelloController {
         response.put("message", "Hello " + name);
         return ResponseEntity.ok(response);
     }
+
 }

@@ -1,42 +1,83 @@
 # Hello World FullStack Project
-This is a local deployment of a full stack project
+## Overview
+This project showcases a full stack web application leveraging React for the frontend and Java Spring for the backend. It utilizes Docker and Kubernetes for containerization and orchestration, allowing for efficient development and deployment workflows.
+
+## Purpose
+The purpose of this project is to provide an example of building and deploying a full-stack web application using modern technologies and best practices. It acts as a simulation of full-stack project in production. The React client is run as a Docker container which communicates to the pods of the Java Spring server.
+
+# Requirements:
+- node.js
+- docker
+- kubernetes
+- jdk 21
+- gradle
 
 # Steps to operate fullstack project
+## Deploying React client in a Docker container
+Build Docker image of React client
+```
+docker build -t react-client:v1 ./frontend/ --no-cache
+```
 
+Run React client as a Docker container
+```
+docker run -d -p 3000:3000 react-client:v1
+```
 
-## Deploying Kubernetes cluster
+## Build JAR file of Java Spring server
+```
+cd ./backend/hello-world-server/
+gradle build
+cd ../..
+```
+
+## Deploying Kubernetes cluster of backend
+
+**Note:** Make sure to build the jar file before deploying cluster!!
 
 Run local container registry
 ```
 docker run -d -p 5010:5000 --name registry registry:2
 ```
 
-Build Docker images of apps
+Build the JAR file
 ```
-docker build -t react-client:v1 ./frontend/
-docker build -t java-spring-server:v1 ./backend/
+gradlew run ./backend/hello-world-server/
+```
+
+Build Docker image of Java Spring server
+```
+docker build -t java-spring-server:v1 ./backend/ --no-cache
 ```
 
 Tag and push Docker images of apps to local container registry
 ```
-docker tag react-client:v1 localhost:5010/react-client:v1
-docker push localhost:5010/react-client:v1
 docker tag java-spring-server:v1 localhost:5010/java-spring-server:v1
 docker push localhost:5010/java-spring-server:v1
 ```
 
 Deploy pods and services of app
 ```
-kubectl apply -f ./infrastructure/kubernetes/frontend-deployment.yaml
 kubectl apply -f ./infrastructure/kubernetes/backend-deployment.yaml
 ```
 
-## Shutting down Kubernetes cluster
+# Steps to shutdown fullstack project
+## Shutting down React client
+Find the container id or name of the react-client container
+```
+docker ps
+```
 
+Stop the react-client container
+```
+docker stop <container_id_or_name>
+```
+
+## Shutting down Kubernetes cluster of backend
+Shutdown the deployment of the pods and service
+Deletes image registry
 ```
 kubectl delete deployment java-spring-pod
 kubectl delete service java-spring-service
-kubectl delete deployment react-pod
-kubectl delete service react-service
 docker rm -f registry
 ```

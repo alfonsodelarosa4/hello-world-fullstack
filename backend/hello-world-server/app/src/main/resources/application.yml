@@ -1,5 +1,0 @@
-# application.yml
-
-# Set the server port
-server:
-  port: 8081
