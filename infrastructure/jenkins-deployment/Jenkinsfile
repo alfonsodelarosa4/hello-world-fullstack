@@ -1,0 +1,5 @@
+/*
+Merge Pipeline:
+This pipeline is triggered whenever someone updates the main branch.
+It checks out the code, builds Docker images, and updates Kubernetes and Docker deployments.
+*/

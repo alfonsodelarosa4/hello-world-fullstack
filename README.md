@@ -1,6 +1,6 @@
 # Hello World FullStack Project
 ## Overview
-This project showcases a full stack web application leveraging React for the frontend and Java Spring for the backend. It utilizes Docker and Kubernetes for containerization and orchestration, allowing for efficient development and deployment workflows.
+This project showcases a fullstack web application leveraging React for the frontend and Java Spring for the backend. It utilizes Docker and Kubernetes for containerization and orchestration, allowing for efficient development and deployment workflows.
 
 ## Purpose
 The purpose of this project is to provide an example of building and deploying a full-stack web application using modern technologies and best practices. It acts as a simulation of full-stack project in production. The React client is run as a Docker container which communicates to the pods of the Java Spring server.
