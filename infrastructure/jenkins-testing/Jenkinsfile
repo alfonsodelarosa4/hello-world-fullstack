@@ -18,97 +18,37 @@ pipeline {
                 }
             }
         }
-        
-        stage('Build and Test') {
-            parallel {
-                stage('Build and Test Java Spring Server' ) {
-                    steps {
-                        script {
-                            // Build JAR file of Java Spring server
-                            echo 'Build JAR file of Java Spring server'
-                            
-                            withGradle {
-                                sh 'cd ./backend/hello-world-server/ && gradle build'
-                            }
-                            // Build Docker image of Java Spring server
-                            echo 'Build Docker image of Java Spring server'
-                            sh 'docker build -t java-spring-server:v1 ./backend/ --no-cache'
-                            
-                            // Run Docker container of Java Spring server
-                            echo 'Run Docker container of Java Spring server'
-                            def containerId = sh(script: 'docker run -d -p 8080:8080 java-spring-server:v1', returnStdout: true).trim()
-                            
-                            // Run tests for Java Spring server inside the Docker container
-                            echo 'Run tests for Java Spring server inside the Docker container'
-                            def testExitCode = sh(script: "docker exec $containerId ./gradle test", returnStatus: true)
-                            
-                            // Stop and remove the Docker container
-                            echo 'server docker start'
-                            sh "docker stop $containerId"
-                            sh "docker rm $containerId"
-                            
-                            // Check the exit code of the test command and handle errors
-                            if (testExitCode != 0) {
-                                error "Tests failed"
-                            }
-                        }
-                    }
-                }
 
-                /*
-                stage('Build and Test React Client') {
-                    steps {
-                        script {
-                            
-                            // Build Docker image of React client
-                            echo 'Build Docker image of React client'
-                            sh 'docker build -t react-client:v1 -f ./frontend/Dockerfile.test --no-cache ./frontend/'
-                            
-                            // Run tests for React client inside the Docker container
-                            echo 'Run tests for React client inside the Docker container'
-                            sh 'docker run --rm react-client:v1'
-                            
-                            // Stop and remove the Docker container
-                            echo 'Clean Docker test'
-                            sh 'docker rmi react-client:v1'
-                            
-                        }
-                    }
+        stage('Build Java Spring Server' ) {
+            steps {                  
+                withGradle {
+                    // Build JAR file of Java Spring server
+                    echo 'Build JAR file of Java Spring server'
+                    sh 'cd ./backend/hello-world-server/ && gradle build'
                 }
-                */
+            }
+        }
+        stage('Test Java Spring Server' ) {
+            steps {                 
+                withGradle {
+                    // Run tests for Java Spring server
+                    echo 'Run tests for Java Spring server'
+                    sh 'cd ./backend/hello-world-server/ && gradle test'
+                }
+            }
+        }
+        stage('Install NodeJS depedencies') {
+            steps {
+                echo 'Install NodeJS depedencies'
+                sh 'npm install'
+            }     
+        }
 
+        stage('Test React Client') {
+            steps {
+                echo 'Test React client'
+                sh 'npm test'
             }
         }
     }
-    
-    /*
-    post {
-        success {
-            script {
-                currentBuild.result = 'SUCCESS'
-                updateGitHubStatus('success')
-            }
-        }
-        failure {
-            script {
-                currentBuild.result = 'FAILURE'
-                updateGitHubStatus('failure')
-            }
-        }
-    }
-    */
-}
-
-def updateGitHubStatus(status) {
-    // Use GitHub API or Jenkins GitHub plugin to update pull request status
-    // Example implementation:
-    // Replace <your-github-api-endpoint>, <your-repo-owner>, and <your-repo-name> with actual values
-    def apiUrl = "<your-github-api-endpoint>/repos/<your-repo-owner>/<your-repo-name>/statuses/${env.BUILD_ID}"
-    def payload = [
-        state: status,
-        target_url: env.BUILD_URL,
-        description: status == 'success' ? 'Build successful' : 'Build failed',
-        context: 'continuous-integration/jenkins'
-    ]
-    httpRequest url: apiUrl, httpMode: 'POST', requestBody: groovy.json.JsonOutput.toJson(payload)
 }
