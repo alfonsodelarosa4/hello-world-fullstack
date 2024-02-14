@@ -8,6 +8,7 @@ pipeline {
     tools {
         gradle 'Gradle-8.5'
         dockerTool 'Docker-latest'
+        nodejs 'NodeJS-21.6.1'
     }
     
     stages {
@@ -20,34 +21,38 @@ pipeline {
         }
 
         stage('Build Java Spring Server' ) {
-            steps {                  
+            steps {
+                echo 'Build JAR file of Java Spring server'
                 withGradle {
-                    // Build JAR file of Java Spring server
-                    echo 'Build JAR file of Java Spring server'
                     sh 'cd ./backend/hello-world-server/ && gradle build'
                 }
             }
         }
+        
         stage('Test Java Spring Server' ) {
-            steps {                 
-                withGradle {
-                    // Run tests for Java Spring server
-                    echo 'Run tests for Java Spring server'
+            steps { 
+                echo 'Run tests for Java Spring server'                
+                withGradle {                    
                     sh 'cd ./backend/hello-world-server/ && gradle test'
                 }
             }
         }
+
         stage('Install NodeJS depedencies') {
             steps {
                 echo 'Install NodeJS depedencies'
-                sh 'npm install'
+                withNodeJS {
+                    sh 'npm install'
+                }
             }     
         }
 
         stage('Test React Client') {
             steps {
                 echo 'Test React client'
-                sh 'npm test'
+                withNodeJS {
+                    sh 'npm test'
+                }
             }
         }
     }
