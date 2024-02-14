@@ -41,14 +41,14 @@ pipeline {
         stage('Install NodeJS depedencies') {
             steps {
                 echo 'Install NodeJS depedencies'
-                sh 'npm install'
+                sh 'cd ./frontend/hello-world-client/ && npm install'
             }     
         }
 
         stage('Test React Client') {
             steps {
                 echo 'Test React client'
-                sh 'npm test'
+                sh 'cd ./frontend/hello-world-client/ && npm test'
             }
         }
     }
