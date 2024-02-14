@@ -28,7 +28,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Test Java Spring Server' ) {
             steps { 
                 echo 'Run tests for Java Spring server'                
@@ -41,18 +41,14 @@ pipeline {
         stage('Install NodeJS depedencies') {
             steps {
                 echo 'Install NodeJS depedencies'
-                withNodeJS {
-                    sh 'npm install'
-                }
+                sh 'npm install'
             }     
         }
 
         stage('Test React Client') {
             steps {
                 echo 'Test React client'
-                withNodeJS {
-                    sh 'npm test'
-                }
+                sh 'npm test'
             }
         }
     }
