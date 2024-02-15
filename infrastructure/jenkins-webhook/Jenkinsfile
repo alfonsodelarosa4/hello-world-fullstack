@@ -1,6 +1,6 @@
 /*
-Testing Pipeline:
-This pipeline is triggered whenever someone makes a push to the main branch. 
+Webhook Pipeline:
+This pipeline is triggered whenever someone makes a pull request to the main branch. 
 It checks out the code, builds Docker images, runs tests, and sends status updates to GitHub.
 */
 pipeline {
