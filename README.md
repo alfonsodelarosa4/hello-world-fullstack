@@ -97,7 +97,7 @@ The following will provide instructions to create and deploy a Jenkins server lo
 5. Click **Generate new token**
 6. Provide token name, expiration, select this repo (assuming your forked it)
 7. Click **Generate token**
-8. Save this token somewhere safe <personal-access-token>
+8. Save this token somewhere safe: **[personal-access-token]**
 
 ## Installation
 Create and run Jenkins server
@@ -144,10 +144,10 @@ Save auth token from command line
 7. Create Generic Cause value
     1. Generic Cause -> $commitMessage commit from $author
 8. Create token under **Token** 
-    * save this token <generic-webhook-token>
+    * save this token: **[generic-webhook-token]**
 9. Definition -> Pipeline script from SCM
 10. SCM -> Git
-11. Repository URL -> https://<personal-access-token>@github.com/<project-link>.git
+11. Repository URL -> https://**[personal-access-token]**@github.com/**[project-link]**.git
 12. Script Path -> infrastructure\jenkins-testing\Jenkinsfile (relative location of Jenkinsfile)
 13. branch specifier -> $branchName
 14. uncheck **lightweight checkout**
@@ -165,11 +165,11 @@ ngrok.exe authtoken <ngrok-auth-token>
 ```
 ngrok.exe http 8090
 ```
-7. Save the ngrok link address <ngrok-link>
+7. Save the ngrok link address: **ngrok-link**
 
 ## Setup GitHub Webhook
 1. Go to **Settings** of GitHub repository
 2. Go to **WehHooks**
 3. Click **Add webhook**
-4. Payload URL -> <ngrok-link>/generic-webhook-trigger/invoke?token=<generic-webhook-token>
+4. Payload URL -> **[ngrok-link]**/generic-webhook-trigger/invoke?token=**[generic-webhook-token]**
 5. Ensure the following is selected: **Just the push event** and **Active**
