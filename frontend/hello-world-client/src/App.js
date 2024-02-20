@@ -24,7 +24,7 @@ function App() {
 
     return (
         <div className="App">
-            <h1>Version 1</h1>
+            <h1>Hello World App</h1>
             <label>
                 Enter your name: 
                 <input type="text" value={name} onChange={(e) => setName(e.target.value)} />

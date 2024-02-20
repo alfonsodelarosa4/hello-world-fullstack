@@ -7,7 +7,6 @@ pipeline {
     agent any
     tools {
         gradle 'Gradle-8.5'
-        dockerTool 'Docker-latest'
         nodejs 'NodeJS-21.6.1'
     }
     
