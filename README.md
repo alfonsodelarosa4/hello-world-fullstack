@@ -90,13 +90,13 @@ The following will provide instructions to create and deploy a Jenkins server lo
 
 ## Get personal access token of project
 ***Why?:*** This allows Jenkins to have access to your project.
-1. Go to *GitHub*
-2. Go to *Settings*
-3. Go to *Developer settings*
-4. Go to *Fine-grained tokens*
-5. Click *Generate new token*
+1. Go to **GitHub**
+2. Go to **Settings**
+3. Go to **Developer settings**
+4. Go to **Fine-grained tokens**
+5. Click **Generate new token**
 6. Provide token name, expiration, select this repo (assuming your forked it)
-7. Click *Generate token*
+7. Click **Generate token**
 8. Save this token somewhere safe <personal-access-token>
 
 ## Installation
@@ -125,31 +125,32 @@ Save auth token from command line
 1. Select create pipeline
 2. Check ✅ **Generic Webhook Trigger**
 3. Create **branch name** variable under **Generic Webhook Trigger**
+    ![](https://github.com/alfonsodelarosa4/hello-world-fullstack/blob/main/captures/generic-webhook-screenshot.JPG)
     1. Click **Add** under **Post content parameters**
     2. Name of variable -> branchName
     3. Expression -> .ref
     4. Check ✅ **JSONPath**
     5. Value filter -> \\[\"refs\/heads\/|\"\\]
-4. Create **pull request author** variable under **Generic Webhook Trigger**
+5. Create **pull request author** variable under **Generic Webhook Trigger**
     1. Click **Add** under **Post content parameters**
     2. Name of variable -> author
     3. Expression -> .pusher.name
     4. Check ✅ **JSONPath**
-5. Create **commit message** variable under **Generic Webhook Trigger**
+6. Create **commit message** variable under **Generic Webhook Trigger**
     1. Click **Add** under **Post content parameters**
     2. Name of variable -> commitMessage
     3. Expression -> .head_commit.message
     4. Check ✅ **JSONPath**
-6. Create Generic Cause value
+7. Create Generic Cause value
     1. Generic Cause -> $commitMessage commit from $author
-7. Create token under **Token** 
+8. Create token under **Token** 
     * save this token <generic-webhook-token>
-8. Definition -> Pipeline script from SCM
-9. SCM -> Git
-10. Repository URL -> https://<personal-access-token>@github.com/<project-link>.git
-11. Script Path -> infrastructure\jenkins-testing\Jenkinsfile (relative location of Jenkinsfile)
-12. branch specifier -> $branchName
-13. uncheck **lightweight checkout**
+9. Definition -> Pipeline script from SCM
+10. SCM -> Git
+11. Repository URL -> https://<personal-access-token>@github.com/<project-link>.git
+12. Script Path -> infrastructure\jenkins-testing\Jenkinsfile (relative location of Jenkinsfile)
+13. branch specifier -> $branchName
+14. uncheck **lightweight checkout**
 
 ## Create ngrok tunnel from GitHub webhook to local Jenkins server
 1. Create ngrok account online
